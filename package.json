@@ -1,0 +1,40 @@
+{
+  "name": "scurry",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "compile": "npx tsc",
+    "webpack": "webpack --config webpack.config.js",
+    "copy-files": "rsync -av --exclude '*.ts' ./src/ ./dist/src && cp ./manifest.json ./dist/manifest.json",
+    "build": "npm run clean && npm run webpack && npm run copy-files",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": ["**/__tests__/**/*.test.ts"],
+    "moduleFileExtensions": ["ts", "js"]
+  },
+  "author": "Bryan Lee",
+  "license": "MIT",
+  "description": "Bring nature to your browser!",
+  "devDependencies": {
+    "@types/chrome": "^0.0.308",
+    "@types/cleave.js": "^1.4.12",
+    "@types/flatpickr": "^3.1.4",
+    "@types/jest": "^29.5.14",
+    "css-loader": "^7.1.2",
+    "jest": "^29.7.0",
+    "style-loader": "^4.0.0",
+    "ts-jest": "^29.2.6",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.2",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "cleave.js": "^1.6.0"
+  }
+}
