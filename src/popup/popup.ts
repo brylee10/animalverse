@@ -1,7 +1,8 @@
 import Cleave from "cleave.js";
 import { TimeManager } from "../utils";
 import {
-  AnimalType,
+  ALARM_NAME,
+  SpriteType,
   Movement,
   SyncStorage,
   allSyncKeys,
@@ -11,62 +12,70 @@ import {
 document.addEventListener("DOMContentLoaded", function () {
   const timeManager = new TimeManager();
   // Map keys to their corresponding DOM input elements
-  const animalverseElements: {
+  const spriteverseElements: {
     [key: string]: HTMLInputElement | null;
   } = {
-    animal: document.querySelector("#animal") as HTMLInputElement,
+    sprite: document.querySelector("#sprite") as HTMLInputElement,
     startTime: document.querySelector(".start-time") as HTMLInputElement,
     endTime: document.querySelector(".end-time") as HTMLInputElement,
     interval: document.querySelector("#interval") as HTMLInputElement,
     animalCnt: document.querySelector("#animalCnt") as HTMLInputElement,
-    animalverseOn: document.querySelector(
-      "#animalverseToggle"
+    spriteverseOn: document.querySelector(
+      "#spriteverseToggle"
     ) as HTMLInputElement,
     speed: document.querySelector("#speed") as HTMLInputElement,
     movement: document.querySelector("#movementPattern") as HTMLInputElement,
     height: document.querySelector("#height") as HTMLInputElement,
+    timeToNextApperance: document.querySelector(
+      "#timeToNextApperance"
+    ) as HTMLInputElement,
   };
 
   function updateUI(storage: Partial<SyncStorage>) {
     // Update each element with either stored value or default
-    if (animalverseElements.animal)
-      animalverseElements.animal.value =
-        storage.animal ?? defaultSyncStorage.animal;
-    if (animalverseElements.animalCnt)
-      animalverseElements.animalCnt.value = String(
+    if (spriteverseElements.sprite)
+      spriteverseElements.sprite.value =
+        storage.sprite ?? defaultSyncStorage.sprite;
+    if (spriteverseElements.animalCnt)
+      spriteverseElements.animalCnt.value = String(
         storage.animalCnt ?? defaultSyncStorage.animalCnt
       );
-    if (animalverseElements.interval)
-      animalverseElements.interval.value = String(
+    if (spriteverseElements.interval)
+      spriteverseElements.interval.value = String(
         storage.intervalMinutes ?? defaultSyncStorage.intervalMinutes
       );
-    if (animalverseElements.startTime)
-      animalverseElements.startTime.value =
+    if (spriteverseElements.startTime)
+      spriteverseElements.startTime.value =
         storage.startTime ?? defaultSyncStorage.startTime;
-    if (animalverseElements.endTime)
-      animalverseElements.endTime.value =
+    if (spriteverseElements.endTime)
+      spriteverseElements.endTime.value =
         storage.endTime ?? defaultSyncStorage.endTime;
-    if (animalverseElements.animalverseOn)
-      animalverseElements.animalverseOn.checked =
-        storage.animalverseOn ?? defaultSyncStorage.animalverseOn;
-    if (animalverseElements.speed)
-      animalverseElements.speed.value = String(
+    if (spriteverseElements.spriteverseOn)
+      spriteverseElements.spriteverseOn.checked =
+        storage.spriteverseOn ?? defaultSyncStorage.spriteverseOn;
+    if (spriteverseElements.speed)
+      spriteverseElements.speed.value = String(
         storage.speed ?? defaultSyncStorage.speed
       );
-    if (animalverseElements.movement)
-      animalverseElements.movement.value =
+    if (spriteverseElements.movement)
+      spriteverseElements.movement.value =
         storage.movement ?? defaultSyncStorage.movement;
-    if (animalverseElements.height)
-      animalverseElements.height.value = String(
+    if (spriteverseElements.height)
+      spriteverseElements.height.value = String(
         storage.height ?? defaultSyncStorage.height
       );
+    if (spriteverseElements.timeToNextApperance && storage.nextAppearanceSec) {
+      spriteverseElements.timeToNextApperance.value = timeManager.secondsToMMSS(
+        storage.nextAppearanceSec
+      );
+    }
   }
 
   chrome.storage.sync.get(allSyncKeys, (result: Partial<SyncStorage>) => {
     // Load saved values or defaults to UI elements
     updateUI(result);
-    // update animalverseToggle' settings given the new UI values
-    saveAnimalverseSettings();
+    // update spriteverseToggle' settings given the new UI values
+    saveSpriteverseSettings();
   });
 
   // Create error message elements for date fields
@@ -78,19 +87,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Insert error elements after the date inputs
   if (
-    animalverseElements.startTime &&
-    animalverseElements.startTime.parentNode
+    spriteverseElements.startTime &&
+    spriteverseElements.startTime.parentNode
   ) {
-    animalverseElements.startTime.parentNode.appendChild(startTimeError);
+    spriteverseElements.startTime.parentNode.appendChild(startTimeError);
   }
 
-  if (animalverseElements.endTime && animalverseElements.endTime.parentNode) {
-    animalverseElements.endTime.parentNode.appendChild(endTimeError);
+  if (spriteverseElements.endTime && spriteverseElements.endTime.parentNode) {
+    spriteverseElements.endTime.parentNode.appendChild(endTimeError);
   }
 
   // Helper function to update a DOM element's value based on type
-  const updateAnimalverseElement = (key: string, newValue: any) => {
-    const el = animalverseElements[key];
+  const updateSpriteverseElement = (key: string, newValue: any) => {
+    const el = spriteverseElements[key];
     if (!el) return;
 
     if (el.type === "checkbox") {
@@ -107,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to validate date fields and show/hide error messages
   const validateDateField = (field: "startTime" | "endTime") => {
-    const element = animalverseElements[field];
+    const element = spriteverseElements[field];
     const errorElement = field === "startTime" ? startTimeError : endTimeError;
 
     if (element && errorElement) {
@@ -129,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return false;
       }
 
-      const startTime = animalverseElements.startTime;
+      const startTime = spriteverseElements.startTime;
 
       if (field == "endTime" && element && startTime) {
         const startValue = startTime.value.trim();
@@ -156,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return true;
   };
 
-  const saveAnimalverseSettings = () => {
+  const saveSpriteverseSettings = () => {
     // Validate date fields before saving
     const startTimeValid = validateDateField("startTime");
     const endTimeValid = validateDateField("endTime");
@@ -164,44 +173,44 @@ document.addEventListener("DOMContentLoaded", function () {
     const syncData: Partial<SyncStorage> = {};
 
     if (
-      animalverseElements.animal &&
-      Object.values(AnimalType).includes(
-        animalverseElements.animal.value as AnimalType
+      spriteverseElements.sprite &&
+      Object.values(SpriteType).includes(
+        spriteverseElements.sprite.value as SpriteType
       )
     )
-      syncData.animal = animalverseElements.animal.value as AnimalType;
+      syncData.sprite = spriteverseElements.sprite.value as SpriteType;
 
-    if (startTimeValid && animalverseElements.startTime)
-      syncData.startTime = animalverseElements.startTime.value;
+    if (startTimeValid && spriteverseElements.startTime)
+      syncData.startTime = spriteverseElements.startTime.value;
 
-    if (endTimeValid && animalverseElements.endTime)
-      syncData.endTime = animalverseElements.endTime.value;
+    if (endTimeValid && spriteverseElements.endTime)
+      syncData.endTime = spriteverseElements.endTime.value;
 
-    if (animalverseElements.interval)
+    if (spriteverseElements.interval)
       syncData.intervalMinutes = parseInt(
-        animalverseElements.interval.value,
+        spriteverseElements.interval.value,
         10
       );
 
-    if (animalverseElements.animalCnt)
-      syncData.animalCnt = parseInt(animalverseElements.animalCnt.value, 10);
+    if (spriteverseElements.animalCnt)
+      syncData.animalCnt = parseInt(spriteverseElements.animalCnt.value, 10);
 
-    if (animalverseElements.animalverseOn)
-      syncData.animalverseOn = animalverseElements.animalverseOn.checked;
+    if (spriteverseElements.spriteverseOn)
+      syncData.spriteverseOn = spriteverseElements.spriteverseOn.checked;
 
-    if (animalverseElements.speed)
-      syncData.speed = parseInt(animalverseElements.speed.value, 10);
+    if (spriteverseElements.speed)
+      syncData.speed = parseInt(spriteverseElements.speed.value, 10);
 
-    if (animalverseElements.movement)
-      syncData.movement = animalverseElements.movement.value as Movement;
+    if (spriteverseElements.movement)
+      syncData.movement = spriteverseElements.movement.value as Movement;
 
-    if (animalverseElements.height)
-      syncData.height = parseInt(animalverseElements.height.value, 10);
+    if (spriteverseElements.height)
+      syncData.height = parseInt(spriteverseElements.height.value, 10);
 
     chrome.storage.sync.set(syncData, () => {
       if (chrome.runtime.lastError) {
         console.error(
-          "Error saving animalverse settings:",
+          "Error saving spriteverse settings:",
           chrome.runtime.lastError
         );
       }
@@ -209,30 +218,30 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // Add input event listeners for date fields to provide real-time validation
-  if (animalverseElements.startTime) {
-    animalverseElements.startTime.addEventListener("input", () => {
+  if (spriteverseElements.startTime) {
+    spriteverseElements.startTime.addEventListener("input", () => {
       validateDateField("startTime");
     });
 
-    animalverseElements.startTime.addEventListener("blur", () => {
+    spriteverseElements.startTime.addEventListener("blur", () => {
       validateDateField("startTime");
     });
   }
 
-  if (animalverseElements.endTime) {
-    animalverseElements.endTime.addEventListener("input", () => {
+  if (spriteverseElements.endTime) {
+    spriteverseElements.endTime.addEventListener("input", () => {
       validateDateField("endTime");
     });
 
-    animalverseElements.endTime.addEventListener("blur", () => {
+    spriteverseElements.endTime.addEventListener("blur", () => {
       validateDateField("endTime");
     });
   }
 
   // When any input or select changes, save the settings
-  Object.values(animalverseElements).forEach((element) => {
+  Object.values(spriteverseElements).forEach((element) => {
     if (element) {
-      element.addEventListener("change", saveAnimalverseSettings);
+      element.addEventListener("change", saveSpriteverseSettings);
     }
   });
 
@@ -240,11 +249,32 @@ document.addEventListener("DOMContentLoaded", function () {
   chrome.storage.onChanged.addListener((changes, namespace) => {
     if (namespace === "sync") {
       for (const key in changes) {
-        if (key in animalverseElements) {
+        if (key in spriteverseElements) {
           const { newValue } = changes[key];
-          updateAnimalverseElement(key, newValue);
+          updateSpriteverseElement(key, newValue);
         }
       }
     }
   });
 });
+
+// Update the countdown to the next appearance and save it to storage
+function updateCountdown() {
+  const timeManager = new TimeManager();
+  chrome.alarms.get(ALARM_NAME, (alarm) => {
+    if (alarm) {
+      const countdownElement = document.querySelector(
+        "#timeToNextApperance"
+      ) as HTMLInputElement;
+
+      const timeRemainingSec: number = Math.floor(
+        (alarm.scheduledTime - Date.now()) / 1000
+      );
+      chrome.storage.sync.set({ nextAppearanceSec: timeRemainingSec });
+      countdownElement.value = timeManager.secondsToMMSS(timeRemainingSec);
+    }
+  });
+}
+
+// Call updateCountdown periodically
+const intervalId = setInterval(updateCountdown, 500);

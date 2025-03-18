@@ -1,11 +1,11 @@
 {
-    "name": "Animalverse",
+    "name": "Spriteverse",
     "version": "1.0.0",
     "manifest_version": 3,
-    "description": "Bring animals to your browser",
+    "description": "Bring sprites to your browser",
     "permissions": ["storage", "alarms"],
     "action": {
-      "default_title": "Animalverse",
+      "default_title": "Spriteverse",
       "default_popup": "src/popup/popup.html"
     },
     "content_scripts": [

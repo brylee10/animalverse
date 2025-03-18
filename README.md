@@ -1,7 +1,7 @@
-# Animalverse: Bring nature to your browser 🐅 🐟🐦
-Let some members of the animal kingdom pay you a visit in Chrome.
+# Spriteverse: Bring nature to your browser 🐅 🐟🐦
+Let some members of the sprite kingdom pay you a visit in Chrome.
 
-Configure animals from run, fly, or crawl (?) in the browser. Install for yourself to get a nice laugh or remind yourself to reset and look outside. Install for a friend to make them confused why there are ants crawling across their screen. 
+Configure sprites from run, fly, or crawl (?) in the browser. Install for yourself to get a nice laugh or remind yourself to reset and look outside. Install for a friend to make them confused why there are ants crawling across their screen. 
 
 Configurable to only run at particular intervals or dates, like April fools...
 
@@ -9,8 +9,8 @@ Configurable to only run at particular intervals or dates, like April fools...
 ### Cows jump over the moon
 ![cows](./src/assets/cows_moon.png)
 
-### There are Koi on my docs!
-![koi](./src/assets/rust_docs.png)
+### It's a me!
+![mario](./src/assets/its_me.png)
 
 ### Who's the real tigger?
 ![tiggers](./src/assets/tiggers.png)
@@ -23,5 +23,5 @@ Configurable to only run at particular intervals or dates, like April fools...
 
 ## Getting Started
 1. Download the Chrome extension
-2. Configure your animals
-3. Wait for the animals to arrive!
+2. Configure your sprites
+3. Wait for the sprites to arrive!

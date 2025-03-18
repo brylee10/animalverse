@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Animalverse</title>
+    <title>Spriteverse</title>
     <link rel="stylesheet" href="popup.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,10 +12,10 @@
   <body>
     <div class="container">
       <div class="header-bar">
-        <h1 class="header">Animalverse</h1>
+        <h1 class="header">Spriteverse</h1>
         <div class="github-link">
           <span class="info" data-tooltip="View source code on GitHub.">
-            <a href="https://github.com/brylee10/animalverse" target="_blank">
+            <a href="https://github.com/brylee10/spriteverse" target="_blank">
               <img src="../assets/github-mark-white.svg" alt="GitHub" />
             </a>
           </span>
@@ -23,16 +23,21 @@
       </div>
 
       <div class="option">
-        <label>Animal</label>
-        <select id="animal">
+        <label>Sprite</label>
+        <select id="sprite">
           <option value="flappy">Flappy</option>
+          <option value="zelda">Zelda</option>
+          <option value="sonic">Sonic</option>
+          <option value="pikachu">Pikachu</option>
+          <option value="mario">Mario</option>
+          <option value="kirby">Kirby</option>
           <option value="bird">Bird</option>
           <option value="tiger">Tiger</option>
           <option value="ant">Ant</option>
           <option value="cow">Cow</option>
           <option value="fish">Fish</option>
         </select>
-        <span class="info" data-tooltip="Select the animal to appear.">
+        <span class="info" data-tooltip="Select the sprite to appear.">
           <img src="../assets/info.svg" alt="Info" />
         </span>
       </div>
@@ -42,18 +47,18 @@
         <input type="number" id="interval" min="1" />
         <span
           class="info"
-          data-tooltip="Number of minutes between animalverses (optional, defaults to 5)."
+          data-tooltip="Number of minutes between spriteverses (optional, defaults to 5)."
         >
           <img src="../assets/info.svg" alt="Info" />
         </span>
       </div>
 
       <div class="option">
-        <label># Animals</label>
+        <label># Sprites</label>
         <input type="number" id="animalCnt" min="1" />
         <span
           class="info"
-          data-tooltip="Number of animals to show in the group."
+          data-tooltip="Number of sprites to show in the group."
         >
           <img src="../assets/info.svg" alt="Info" />
         </span>
@@ -64,7 +69,7 @@
         <input type="number" id="speed" min="1" />
         <span
           class="info"
-          data-tooltip="Animal speed (pixels per second, default: 100)."
+          data-tooltip="Sprite speed (pixels per second, default: 100)."
         >
           <img src="../assets/info.svg" alt="Info" />
         </span>
@@ -75,7 +80,7 @@
         <input type="number" id="height" min="1" />
         <span
           class="info"
-          data-tooltip="Animal height (pixels, default: 50)."
+          data-tooltip="Sprite height (pixels, default: 50)."
         >
           <img src="../assets/info.svg" alt="Info" />
         </span>
@@ -90,7 +95,7 @@
         </select>
         <span
           class="info"
-          data-tooltip="Animal movement pattern (Around screen: moves from side to side, Bottom/Top: Sticks to that side)."
+          data-tooltip="Sprite movement pattern (Around screen: moves from side to side, Bottom/Top: Sticks to that side)."
         >
           <img src="../assets/info.svg" alt="Info" />
         </span>
@@ -103,7 +108,7 @@
         </div>
         <span
           class="info"
-          data-tooltip="Date/time for animalverses to start appearing (optional, defaults to now)."
+          data-tooltip="Date/time for spriteverses to start appearing (optional, defaults to now)."
         >
           <img src="../assets/info.svg" alt="Info" />
         </span>
@@ -116,18 +121,32 @@
         </div>
         <span
           class="info"
-          data-tooltip="Date/time for animalverses to stop appearing (optional, defaults to never)."
+          data-tooltip="Date/time for spriteverses to stop appearing (optional, defaults to never)."
         >
           <img src="../assets/info.svg" alt="Info" />
         </span>
       </div>
 
       <div class="option">
-        <label>Animalverse On</label>
-        <input type="checkbox" id="animalverseToggle" />
+        <label>Time to next appearance</label>
+        <div class="column">
+            <!-- Read only -->
+            <input id="timeToNextApperance" type="text" placeholder="Countdown (mm:ss)" disabled/>
+        </div>
         <span
           class="info"
-          data-tooltip="Toggle the extension on or off. Useful for temporarily disabling animals."
+          data-tooltip="Time (mm:ss) until next sprite apperance (not editable, just for user reference)."
+        >
+          <img src="../assets/info.svg" alt="Info" />
+        </span>
+      </div>
+
+      <div class="option">
+        <label>Spriteverse On</label>
+        <input type="checkbox" id="spriteverseToggle" />
+        <span
+          class="info"
+          data-tooltip="Toggle the extension on or off. Useful for temporarily disabling sprites."
         >
           <img src="../assets/info.svg" alt="Info" />
         </span>

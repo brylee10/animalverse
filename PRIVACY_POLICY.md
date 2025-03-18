@@ -1,8 +1,8 @@
 # **Privacy Policy**
 
-Last Updated: 3/12/25
+Last Updated: 3/17/25
 
-This Privacy Policy explains the practices of the Animalverse Chrome extension (“Extension”) regarding the collection, use, and disclosure of user data. This Extension is designed solely to [briefly describe the extension’s purpose] and does not collect, store, or process any user data.
+This Privacy Policy explains the practices of the Spriteverse Chrome extension (“Extension”) regarding the collection, use, and disclosure of user data. This Extension is designed solely to entertain and does not collect, store, or process any user data.
 
 ### Data Collection and Use
 

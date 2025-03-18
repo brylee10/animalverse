@@ -1,8 +1,8 @@
 import {
-  AnimalConfig,
+  SpriteConfig,
   animalConfigs,
   Movement,
-  AnimalType,
+  SpriteType,
   EdgePositions,
   Message,
   Position,
@@ -13,9 +13,9 @@ chrome.runtime.onMessage.addListener(function (
   sender,
   sendResponse
 ) {
-  if (message.action === "showAnimal") {
-    createAndAnimateAnimalType(
-      message.animal,
+  if (message.action === "showSprite") {
+    createAndAnimateSpriteType(
+      message.sprite,
       message.animalCnt,
       message.speed,
       message.movement,
@@ -24,8 +24,8 @@ chrome.runtime.onMessage.addListener(function (
   }
 });
 
-function createAndAnimateAnimalType(
-  animalType: AnimalType,
+function createAndAnimateSpriteType(
+  animalType: SpriteType,
   animalCnt: number,
   speed: number,
   movement: Movement,
@@ -34,7 +34,7 @@ function createAndAnimateAnimalType(
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
 
-  // all animals start from the same side per render, more organized
+  // all sprites start from the same side per render, more organized
   const startFromLeft = Math.random() < 0.5;
   const scale = height / animalConfigs[animalType].height;
   const scaledWidth = animalConfigs[animalType].width * scale;
@@ -70,18 +70,18 @@ function createAndAnimateAnimalType(
     const startCenter = edgePositions.start;
     const endCenter = edgePositions.end;
 
-    // space out the animals a bit
+    // space out the sprites a bit
     setTimeout(() => {
-      createAnimal(startCenter, endCenter, i, animalType, speed, height);
+      createSprite(startCenter, endCenter, i, animalType, speed, height);
     }, i * Math.random() * 500 + 200 * i);
   }
 }
 
-function createAnimal(
+function createSprite(
   startPos: Position,
   endPos: Position,
   index: number,
-  animalType: AnimalType,
+  animalType: SpriteType,
   speed: number,
   height: number
 ): void {
@@ -90,10 +90,10 @@ function createAnimal(
   const scale = height / origHeight;
   const scaledWidth = config.width * scale;
 
-  // animal container
+  // sprite container
   const animalContainer = document.createElement("div");
-  animalContainer.id = `animal-container-${index}`;
-  animalContainer.className = "animal-container";
+  animalContainer.id = `sprite-container-${index}`;
+  animalContainer.className = "sprite-container";
   animalContainer.style.position = "fixed";
   animalContainer.style.zIndex = "9999";
   animalContainer.style.pointerEvents = "none";
@@ -101,19 +101,19 @@ function createAnimal(
   animalContainer.style.height = `${height}px`;
   animalContainer.style.overflow = "hidden";
 
-  // animal sprite
-  const animal = document.createElement("div");
-  animal.id = `animal-${animalType}-${index}`;
-  animal.className = `animal ${animalType}`;
-  animal.style.width = `${scaledWidth * config.frames}px`;
-  animal.style.height = `${height}px`;
-  animal.style.backgroundImage = `url(${chrome.runtime.getURL(
+  // sprite sprite
+  const sprite = document.createElement("div");
+  sprite.id = `sprite-${animalType}-${index}`;
+  sprite.className = `sprite ${animalType}`;
+  sprite.style.width = `${scaledWidth * config.frames}px`;
+  sprite.style.height = `${height}px`;
+  sprite.style.backgroundImage = `url(${chrome.runtime.getURL(
     config.spriteUrl
   )})`;
-  animal.style.backgroundRepeat = "no-repeat";
-  animal.style.backgroundSize = `${scaledWidth * config.frames}px ${height}px`;
+  sprite.style.backgroundRepeat = "no-repeat";
+  sprite.style.backgroundSize = `${scaledWidth * config.frames}px ${height}px`;
 
-  animalContainer.appendChild(animal);
+  animalContainer.appendChild(sprite);
   document.body.appendChild(animalContainer);
 
   const variationX = (Math.random() - 0.5) * 15;
@@ -137,7 +137,7 @@ function createAnimal(
     animalContainer.style.transform = "scaleX(-1)";
   }
 
-  animal.animate(
+  sprite.animate(
     [
       { backgroundPosition: "0px 0px" },
       // left shifts the next frame into view
@@ -159,7 +159,7 @@ function createAnimal(
     animalContainer.style.top = `${endPos.y + variationY}px`;
   }, 50);
 
-  // remove animal after animation completes
+  // remove sprite after animation completes
   setTimeout(() => {
     if (animalContainer.parentNode === document.body) {
       document.body.removeChild(animalContainer);
@@ -198,7 +198,7 @@ function getBottomEdgePoints(
   animalWidth: number,
   startFromLeft: boolean
 ): EdgePositions {
-  // give the animal room to run!
+  // give the sprite room to run!
   const bottomLeft = { x: -animalWidth, y: height - animalHeight };
   const bottomRight = { x: width + animalWidth, y: height - animalHeight };
 

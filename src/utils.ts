@@ -1,4 +1,4 @@
-import { AnimalType, Movement, ShowAnimalMessage } from "./types";
+import { SpriteType, Movement, ShowSpriteMessage } from "./types";
 
 export class TimeManager {
   // Helper method to parse "MM/DD/YY HH:mm" into a Date object
@@ -51,6 +51,18 @@ export class TimeManager {
       date.getFullYear() === year
     );
   };
+
+  // Helper method to convert seconds to MM:SS format
+  secondsToMMSS(seconds: number) {
+    if (seconds <= 0) {
+      return "00:00";
+    }
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
+      .toString()
+      .padStart(2, "0")}`;
+  }
 }
 
 export class MessageManager {
@@ -60,19 +72,19 @@ export class MessageManager {
     this.timeManager = new TimeManager();
   }
 
-  // Method to check if the current date and time is within the animal's range
-  // Sends a message to the active tab to show the animal for 60 seconds
+  // Method to check if the current date and time is within the sprite's range
+  // Sends a message to the active tab to show the sprite for 60 seconds
   checkTimeRangeAndActivate(
     startTime: string | undefined,
     endTime: string | undefined,
-    animal: AnimalType,
+    sprite: SpriteType,
     animalCnt: number,
-    animalverseOn: boolean,
+    spriteverseOn: boolean,
     speed: number,
     movement: Movement,
     height: number
   ) {
-    if (!animalverseOn) {
+    if (!spriteverseOn) {
       return;
     }
 
@@ -102,13 +114,13 @@ export class MessageManager {
           function (tabs) {
             if (tabs[0] && tabs[0].id) {
               chrome.tabs.sendMessage(tabs[0].id, {
-                action: "showAnimal",
-                animal,
+                action: "showSprite",
+                sprite,
                 animalCnt,
                 speed,
                 movement,
                 height,
-              } as ShowAnimalMessage);
+              } as ShowSpriteMessage);
             }
           }
         );

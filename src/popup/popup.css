@@ -1,7 +1,7 @@
 /* General Styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #1D3821;
+    background-color: #186252;
     color: #fff;
     margin: 0;
     padding: 20px;
@@ -27,7 +27,7 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #6C5736;
+    background-color: #108B73;
     padding: 8px;
     border-radius: 5px;
     font-size: 1rem;
@@ -50,7 +50,7 @@ input[type="datetime-local"],
 select {
     appearance: auto;
     background-color: transparent;
-    border: 2px solid #94784A;
+    border: 2px solid #E66AA4;
     color: #fff;
     border-radius: 3px;
     padding: 5px;
@@ -73,6 +73,11 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
     opacity: 0.7;
     scale: 0.8;
+}
+
+input::placeholder {
+    color: white; 
+    opacity: 0.5; 
 }
 
 .info {
